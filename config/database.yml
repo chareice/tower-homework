@@ -1,0 +1,23 @@
+#docker run --name tower-mysql -p 33069:3306 -e MYSQL_ROOT_PASSWORD=passwd -d mysql
+#docker-machine ip dev
+
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  database: tower-homework
+  username: root
+  password: passwd
+  host: 192.168.200.144
+  port: 33069
+
+development:
+  <<: *default
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: tower-homework-test
+
+production:
+  <<: *default
