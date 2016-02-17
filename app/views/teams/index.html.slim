@@ -1,5 +1,5 @@
 ul
   - @teams.each do |team|
-    li =team.name
+    li =link_to(team.name, team_projects_path(team))
 
 = link_to('新建团队', new_team_path)

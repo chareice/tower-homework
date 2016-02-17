@@ -1,0 +1,6 @@
+p =@team.name
+p 项目列表
+= link_to '创建新项目', new_team_project_path(@team)
+ul
+  - @team.projects.each do |project|
+    li =project.name
