@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
   it '不能有重复的email' do
     expect {
       User.create!(@user_info)
-    }.to raise_error(ActiveRecord::RecordNotUnique)
+    }.to raise_error(ActiveRecord::RecordInvalid)
   end
 
   it '可以验证email和密码' do
