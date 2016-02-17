@@ -4,7 +4,7 @@ RSpec.describe UsersController, type: :controller do
   describe '访问新注册用户页面' do
     it '渲染new模版' do
       get :new
-      expect(response).to be_success
+      expect(response).to render_template(:new)
     end
 
     describe '注册新用户' do
@@ -21,7 +21,7 @@ RSpec.describe UsersController, type: :controller do
       it '注册失败' do
         User.create!(@params)
         post :create, @params
-        expect(assigns(:user).errors.any?).to be true 
+        expect(assigns(:user).errors.any?).to be true
       end
     end
 
