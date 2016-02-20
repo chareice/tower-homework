@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217065644) do
+ActiveRecord::Schema.define(version: 20160217105233) do
 
   create_table "projects", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -28,6 +28,19 @@ ActiveRecord::Schema.define(version: 20160217065644) do
     t.datetime "updated_at",             null: false
   end
 
+  create_table "todos", force: :cascade do |t|
+    t.string   "content",     limit: 255
+    t.integer  "creator_id",  limit: 4
+    t.integer  "executor_id", limit: 4
+    t.string   "state",       limit: 255, default: "opened"
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.integer  "project_id",  limit: 4
+  end
+
+  add_index "todos", ["project_id"], name: "index_todos_on_project_id", using: :btree
+  add_index "todos", ["state"], name: "index_todos_on_state", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "username",        limit: 255
     t.string   "email",           limit: 255
@@ -40,4 +53,5 @@ ActiveRecord::Schema.define(version: 20160217065644) do
   add_index "users", ["username"], name: "index_users_on_username", using: :btree
 
   add_foreign_key "projects", "teams"
+  add_foreign_key "todos", "projects"
 end
