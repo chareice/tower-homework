@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   resources :projects, shallow: true do
     resources :todos, only: [:index, :new, :create, :update]
   end
+
+  resources :sessions, only: [:create, :destroy, :new]
 end
