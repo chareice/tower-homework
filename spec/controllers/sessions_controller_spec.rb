@@ -1,4 +1,5 @@
 require 'rails_helper'
+include SessionsHelper
 
 RSpec.describe SessionsController, type: :controller do
   before do
@@ -11,11 +12,11 @@ RSpec.describe SessionsController, type: :controller do
   end
 
   it '用户可以登录' do
-    username = @user.username
+    email = @user.email
     password = '123456'
-
-    post :create
-    debugger
+    expect(current_user).to be_nil
+    post :create, email: email, password: password
+    expect(current_user).to eq(@user)
   end
 
 end

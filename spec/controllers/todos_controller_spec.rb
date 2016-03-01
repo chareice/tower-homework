@@ -2,7 +2,9 @@ require 'rails_helper'
 
 RSpec.describe TodosController, type: :controller do
   before do
+    @user = create(:user)
     @project = create(:project)
+    sign_in(@user)
   end
 
   describe '可以获取到某个项目的todo列表' do
@@ -19,8 +21,9 @@ RSpec.describe TodosController, type: :controller do
     end
 
     it '用户未登录状态需要跳转到登录界面' do
+      sign_out
       get :new, project_id: @project.id
-      expect(response).to have_http_status(403)
+      expect(response).to have_http_status(302)
     end
   end
 
