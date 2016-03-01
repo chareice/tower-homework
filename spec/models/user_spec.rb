@@ -21,4 +21,10 @@ RSpec.describe User, type: :model do
       User.auth('some@email.com', 'pass')
     ).to be false
   end
+
+  it '可以创建项目' do
+    expect{
+      @user.create_project('some_project_name')
+    }.to change{Project.count}.by(1)
+  end
 end
