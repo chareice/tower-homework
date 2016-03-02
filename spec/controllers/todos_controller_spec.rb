@@ -25,6 +25,27 @@ RSpec.describe TodosController, type: :controller do
       get :new, project_id: @project.id
       expect(response).to have_http_status(302)
     end
+
+    it '可以创建todo' do
+      executor = create(:user)
+      content = '艰巨的任务'
+      expect{
+        post :create, project_id: @project.id, todo: {content: content, executor_id: executor.id}
+      }.to change{Todo.count}.by(1)
+    end
+
+    it '可以修改todo' do
+      @executor = create(:user)
+      content = '艰巨的任务'
+      expect{
+        post :create, project_id: @project.id, todo: {content: content, executor_id: @executor.id}
+      }.to change{Todo.count}.by(1)
+      @todo = Todo.first
+
+      patch :update, id: @todo.id, todo: {deadline: '2016-03-31'}
+      expect(response).to have_http_status(302)
+    end
+
   end
 
 end

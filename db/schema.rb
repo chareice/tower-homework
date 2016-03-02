@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301093151) do
+ActiveRecord::Schema.define(version: 20160301095433) do
 
   create_table "accesses", force: :cascade do |t|
     t.integer  "user_id",    limit: 4, null: false
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20160301093151) do
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
     t.integer  "project_id",  limit: 4
+    t.datetime "deadline"
   end
 
   add_index "todos", ["project_id"], name: "index_todos_on_project_id", using: :btree
