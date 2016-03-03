@@ -4,4 +4,25 @@ h3 Todo列表
 =link_to('新建Todo', new_project_todo_path(project_id: @project.id))
 
 - if @todos.empty?
-p 当前还没有Todo
+  p 当前还没有Todo
+- else
+table
+  tr
+    th
+      | 任务内容
+    th
+      | 完成时间
+    th
+      | 指派给
+    th
+      | 操作
+  - @todos.each do |todo|
+    tr
+      td #{todo.content}
+      td #{todo.deadline || '未指定'}
+      td
+        - if todo.executor
+          | #{todo.executor.username}
+        - else
+          | 未指派
+      td = link_to('修改', todo_path(todo))

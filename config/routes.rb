@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   end
 
   resources :projects, shallow: true do
-    resources :todos, only: [:index, :new, :create, :update]
+    resources :todos, only: [:index, :new, :create, :update, :show]
   end
 
   resources :sessions, only: [:create, :destroy, :new]

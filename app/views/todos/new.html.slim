@@ -1,3 +1,7 @@
+- if @todo.errors.any?
+  ul
+    - @todo.errors.full_messages.each do |msg|
+      li = msg
 = form_for([@project, @todo]) do |f|
   p
     = f.label(:content, 'Todo内容')
@@ -6,6 +10,7 @@
     = f.label(:deadline, '项目完成时间')
     = f.datetime_local_field(:deadline)
   p
-    = f.select "executor", options_from_collection_for_select(@project.users, 'id', 'username')
+    = f.label(:executor_id, '执行人')
+    = f.select "executor_id", options_from_collection_for_select(@project.users, 'id', 'username', include_blank: true)
 
   = f.submit('创建Todo')
