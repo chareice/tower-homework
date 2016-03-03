@@ -3,7 +3,7 @@ class Todo < ActiveRecord::Base
   belongs_to :executor, class_name: 'User', foreign_key: 'executor_id'
 
   belongs_to :project
-
+  has_many :comments
   #分配任务执行者
   def assign_executor!(executor)
     self.executor = executor
