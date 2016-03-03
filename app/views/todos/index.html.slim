@@ -1,5 +1,5 @@
 h2 当前项目: #{@project.name}
-
+= link_to('返回项目列表', team_projects_path(team_id: @project.team))
 h3 Todo列表
 =link_to('新建Todo', new_project_todo_path(project_id: @project.id))
 

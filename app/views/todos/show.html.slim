@@ -1,0 +1,12 @@
+= form_for(@todo) do |f|
+  p
+    = f.label(:content, 'Todo内容')
+    = f.text_area(:content)
+  p
+    = f.label(:deadline, '项目完成时间')
+    = f.datetime_local_field(:deadline)
+  p
+    = f.label(:executor_id, '执行人')
+    = f.select "executor_id", options_from_collection_for_select(@todo.project.users, 'id', 'username', include_blank: true)
+
+  = f.submit('修改Todo')
