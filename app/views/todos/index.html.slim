@@ -1,0 +1,7 @@
+h2 当前项目: #{@project.name}
+
+h3 Todo列表
+=link_to('新建Todo', new_project_todo_path(project_id: @project.id))
+
+- if @todos.empty?
+p 当前还没有Todo

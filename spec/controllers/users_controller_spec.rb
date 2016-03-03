@@ -9,13 +9,14 @@ RSpec.describe UsersController, type: :controller do
 
     describe '注册新用户' do
       before do
-        @params = {email: 'chareice@live.com', password: 'password'}
+        @params = {email: 'chareice@live.com', password: 'password', username: 'heheda'}
       end
 
       it '注册成功' do
         expect{
           post :create, @params
         }.to change{User.count}.by(1)
+        expect(User.first.username).to eq(@params[:username])
       end
 
       it '注册失败' do

@@ -1,3 +1,8 @@
+h2 您的团队列表
+
+- if @teams.empty?
+  p 当前还没有加入任何团队
+  
 ul
   - @teams.each do |team|
     li =link_to(team.name, team_projects_path(team))

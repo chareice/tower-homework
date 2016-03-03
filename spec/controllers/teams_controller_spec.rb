@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe TeamsController, type: :controller do
   describe '获取team列表' do
     before do
+      user = create(:user)
+      sign_in user
       10.times {
         create(:team)
       }
@@ -15,6 +17,11 @@ RSpec.describe TeamsController, type: :controller do
   end
 
   describe '新建team' do
+    before do
+      user = create(:user)
+      sign_in user
+    end
+
     it '渲染new模版' do
       get :new
       expect(response).to render_template(:new)

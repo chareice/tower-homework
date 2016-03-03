@@ -1,4 +1,6 @@
 class Todo < ActiveRecord::Base
+  validates :content, presence: true
+
   belongs_to :creator, class_name: 'User', foreign_key: 'creator_id'
   belongs_to :executor, class_name: 'User', foreign_key: 'executor_id'
 

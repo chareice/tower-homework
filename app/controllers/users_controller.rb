@@ -6,8 +6,9 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(email: params[:email], password: params[:password])
+    @user.username = params[:username]
     if @user.save
-      render text: 'nothing'
+      redirect_to teams_path
     else
       render :new
     end

@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe ProjectsController, type: :controller do
   before do
+    @user = create(:user)
+    sign_in @user
+
     @team = create(:team)
     10.times do
       @team.projects << create(:project)
@@ -26,8 +29,11 @@ RSpec.describe ProjectsController, type: :controller do
         post :create, team_id: @team.id, name: '新项目'
       }.to change{Project.count}.by(1)
 
-      project = Project.first
+      project = Project.last
       expect(project.team).to eq(@team)
+
+      expect(@user.projects).to include(project)
+      expect(project.users).to include(@user)
     end
   end
 end

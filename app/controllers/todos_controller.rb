@@ -1,15 +1,27 @@
 class TodosController < ApplicationController
   before_action :require_login
 
+  def new
+    @todo = Todo.new
+    @project = Project.where(id: params[:project_id]).includes(:users).first
+  end
+
   def index
+    @project = Project.find(params[:project_id])
+    @todos = @project.todos
   end
 
   def create
-    todo = Todo.new(todo_params)
-    todo.creator = current_user
-    todo.project_id = params[:project_id]
-    todo.save!
-    redirect_to project_todos_path(project_id: params[:project_id])
+    @project = Project.find(params[:project_id])
+
+    @todo = Todo.new(todo_params)
+    @todo.creator = current_user
+    @todo.project = @project
+    if @todo.save
+      redirect_to project_todos_path(project_id: @project.id)
+    else
+      render 'new'
+    end
   end
 
   def update

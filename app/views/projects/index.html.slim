@@ -1,6 +1,10 @@
-p =@team.name
-p 项目列表
-= link_to '创建新项目', new_team_project_path(@team)
+h1 =@team.name
+
+h3 项目列表
+- if @team.projects.empty?
+  p 当前还没有任何项目
+
 ul
-  - @team.projects.each do |project|
+  - current_user.projects.each do |project|
     li =link_to(project.name, project_todos_path(project_id: project.id))
+= link_to '创建新项目', new_team_project_path(@team)

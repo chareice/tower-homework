@@ -23,8 +23,10 @@ RSpec.describe User, type: :model do
   end
 
   it '可以创建项目' do
+    team = Team.new(name: 'Apple Watch设计团队')
+    team.save
     expect{
-      @user.create_project('some_project_name')
+      @user.create_project('some_project_name', team)
     }.to change{Project.count}.by(1)
   end
 end
