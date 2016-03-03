@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160303024356) do
+ActiveRecord::Schema.define(version: 20160303030904) do
 
   create_table "accesses", force: :cascade do |t|
     t.integer  "user_id",    limit: 4, null: false
@@ -33,6 +33,21 @@ ActiveRecord::Schema.define(version: 20160303024356) do
 
   add_index "comments", ["todo_id"], name: "index_comments_on_todo_id", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "events", force: :cascade do |t|
+    t.string   "from",                limit: 255
+    t.string   "to",                  limit: 255
+    t.string   "action",              limit: 255
+    t.string   "meta_data",           limit: 255
+    t.string   "actor_name",          limit: 255
+    t.integer  "actor_id",            limit: 4
+    t.string   "target_todo_content", limit: 255
+    t.integer  "target_todo_id",      limit: 4
+    t.string   "project_name",        limit: 255
+    t.integer  "project_id",          limit: 4
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
 
   create_table "projects", force: :cascade do |t|
     t.string   "name",       limit: 255

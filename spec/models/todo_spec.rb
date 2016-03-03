@@ -2,7 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Todo, type: :model do
   before do
+    project = create(:project)
     @todo = Todo.new
+    @todo.project = project
     @todo.content = '一些复杂而艰巨的任务'
   end
 
@@ -46,12 +48,12 @@ RSpec.describe Todo, type: :model do
   it '任务可以完成' do
     creator = create(:user)
     executor = create(:user)
-
+    closer = create(:user)
     @todo.creator = creator
     @todo.save
     @todo.assign_executor!(executor)
 
-    @todo.close!
+    @todo.close!(closer)
     expect(@todo.state).to eq('closed')
   end
 
@@ -63,7 +65,7 @@ RSpec.describe Todo, type: :model do
     @todo.save
     @todo.assign_executor!(executor)
 
-    @todo.close!
+    @todo.close!(creator)
     expect(@todo.state).to eq('closed')
     @todo.reopen!
     expect(@todo.state).to eq('opened')
