@@ -10,5 +10,9 @@ Rails.application.routes.draw do
     resources :todos, only: [:index, :new, :create, :update, :show]
   end
 
+  resources :todos, shallow: true do
+    resources :comments, only: [:create, :index]
+  end
+
   resources :sessions, only: [:create, :destroy, :new]
 end

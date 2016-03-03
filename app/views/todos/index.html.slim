@@ -25,4 +25,8 @@ h3 Todo列表
             | #{todo.executor.username}
           - else
             | 未指派
-        td = link_to('修改', todo_path(todo))
+        td
+          = link_to('修改', todo_path(todo))
+          |
+          = link_to('评论', todo_comments_path(todo_id: todo))
+          button 完成任务
