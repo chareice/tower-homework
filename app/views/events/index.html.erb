@@ -1,5 +1,6 @@
 <script src="/angular.min.js"></script>
 <script src="/sugar.min.js"></script>
+<%= link_to('返回项目列表', team_projects_path(team_id: @team.id)) %>
 
 <script>
 Date.prototype.mmdd = function() {
@@ -33,19 +34,39 @@ function($scope){
 
       <div class="action">
         <div ng-if="event.action == 'todo_create'">
-          创建了Todo
+          <span ng-if="event.meta_data.executor_name">
+            给{{event.meta_data.executor_name}}
+          </span>
+          创建了任务
         </div>
+
+        <div ng-if="event.action == 'comment_create'">
+          回复了任务
+        </div>
+
         <div ng-if="event.action == 'change_deadline'">
           将任务完成时间从
-          <span ng-if="event.from">没有截止日期</span>
-          <span ng-if="!event.from"></span>
+          <span ng-if="!event.from">没有截止日期</span>
+          <span ng-if="event.from">{{event.from}}</span>
           修改为
           {{event.to}}
+        </div>
+
+        <div ng-if="event.action == 'change_executor'">
+          将
+          <span ng-if="event.from">的</span>
+          任务指派给 {{event.to}}
         </div>
       </div>
 
       <div class="target">
-        ：{{ event.target_todo_content }}
+        ：<a href="/todos/{{event.target_todo_id}}/comments">{{ event.target_todo_content }}</a>
+      </div>
+
+      <div class="comment-content" ng-if="event.action == 'comment_create'">
+        <p>
+          {{event.meta_data.content}}
+        </p>
       </div>
     </li>
   </ul>

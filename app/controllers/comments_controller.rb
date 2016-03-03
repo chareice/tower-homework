@@ -1,5 +1,7 @@
 class CommentsController < ApplicationController
   def index
+    @todo = Todo.find(params[:todo_id])
+    @comment = Comment.new
   end
 
   def create

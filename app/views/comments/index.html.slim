@@ -1,0 +1,14 @@
+h1 Todo #{@todo.content} 的评论
+
+- if @todo.comments.empty?
+  p 暂时还没有评论 快评论一发
+- else
+  = link_to('修改', todo_path(@todo))
+  ul
+    - @todo.comments.each do |comment|
+      p #{comment.user.username} 说：#{comment.content}
+
+= form_for([@todo, @comment]) do |f|
+  = f.label(:content, '评论内容')
+  = f.text_area(:content)
+  = f.submit('添加评论')
