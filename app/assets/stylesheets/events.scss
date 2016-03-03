@@ -1,0 +1,23 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+.event-list{
+  list-style: none;
+  li{
+    width: 100%;
+    overflow: auto;
+  }
+}
+.created_at{
+  float: left;
+}
+.actor_name{
+  float: left;
+}
+.target{
+  float: left;
+}
+.action{
+  float: left;
+}

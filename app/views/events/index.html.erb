@@ -1,0 +1,52 @@
+<script src="/angular.min.js"></script>
+<script src="/sugar.min.js"></script>
+
+<script>
+Date.prototype.mmdd = function() {
+ var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+ var dd  = this.getDate().toString();
+ return (mm[1]?mm:"0"+mm[0]) +'/' +(dd[1]?dd:"0"+dd[0]); // padding
+};
+
+angular.module('TowerHomework', [])
+.controller('MainCtrl', [
+'$scope',
+function($scope){
+  $scope.events = <%= @events.to_s.html_safe%>;
+  $scope.eventGroupByDate = $scope.events.groupBy(function(event){
+    var date = new Date(event.created_at)
+    return date.mmdd();
+  });
+}]);
+
+</script>
+<div ng-app="TowerHomework" ng-controller="MainCtrl">
+  <ul class="event-list">
+    <li ng-repeat="event in events">
+      <div class="created_at">
+        {{event.created_at | date:"H:mm"}}
+      </div>
+
+      <div class="actor_name">
+        {{event.actor_name}}
+      </div>
+
+      <div class="action">
+        <div ng-if="event.action == 'todo_create'">
+          创建了Todo
+        </div>
+        <div ng-if="event.action == 'change_deadline'">
+          将任务完成时间从
+          <span ng-if="event.from">没有截止日期</span>
+          <span ng-if="!event.from"></span>
+          修改为
+          {{event.to}}
+        </div>
+      </div>
+
+      <div class="target">
+        ：{{ event.target_todo_content }}
+      </div>
+    </li>
+  </ul>
+</div>
