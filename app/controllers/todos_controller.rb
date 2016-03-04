@@ -43,7 +43,7 @@ class TodosController < ApplicationController
   def destroy
     todo = Todo.find(params[:id])
     project_id = todo.project_id
-    todo.destroy
+    todo.destroy_by(current_user)
     redirect_to project_todos_path(project_id: todo.project.id)
   end
 

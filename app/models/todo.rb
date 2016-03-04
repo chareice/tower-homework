@@ -21,6 +21,11 @@ class Todo < ActiveRecord::Base
     self.update_attributes!(params)
   end
 
+  def destroy_by(actor)
+    @actor = actor
+    self.destroy
+  end
+
   #分配任务执行者
   def assign_executor!(executor)
     self.executor = executor
@@ -92,6 +97,10 @@ class Todo < ActiveRecord::Base
 
   def send_destroy_event
     options = {action: 'destroy_todo', todo: self}
+    if @actor
+      options[:actor_name] = @actor.username
+      options[:actor_id] = @actor.id
+    end
     Event.build(options)
   end
 
