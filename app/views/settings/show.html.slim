@@ -1,0 +1,6 @@
+=link_to('返回项目列表', team_projects_path(team_id: @team.id))
+=form_tag(team_settings_path(team_id: @team.id), method: :patch)
+- @team_projects.each do |project|
+  =check_box_tag 'projects[]', project.id, (checked = true if @current_user_projects.include?(project)), id:"project_#{project.id}"
+  =label_tag "project_#{project.id}", project.name
+=submit_tag '提交'

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :teams, only: [:index, :new, :create] do
     resources :projects, only: [:index, :new, :create]
     resources :events, only: [:index]
+    resource :settings, only: [:show, :update]
   end
 
   resources :projects, shallow: true do

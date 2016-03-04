@@ -1,7 +1,9 @@
 h1 =@team.name
 = link_to('返回团队列表', teams_path)
-|  
+span |
 = link_to('查看项目动态', team_events_path(team_id: @team.id))
+span |
+= link_to('设置可访问项目', team_settings_path(team_id: @team.id))
 h3 项目列表
 - if @team.projects.empty?
   p 当前还没有任何项目
