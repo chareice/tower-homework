@@ -29,4 +29,5 @@ h3 Todo列表
           = link_to('修改', todo_path(todo))
           |
           = link_to('评论', todo_comments_path(todo_id: todo))
-          button 完成任务
+          = button_to "完成任务", {action: :close, id: todo.id}, {confirm: '确定要完成任务吗？', method: :patch}
+          = button_to "删除任务", todo, :method => :delete

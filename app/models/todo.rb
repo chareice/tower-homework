@@ -11,6 +11,11 @@ class Todo < ActiveRecord::Base
   before_update :send_change_event
   after_destroy :send_destroy_event
 
+  #进行中的任务
+  scope :on_processing, ->{
+    where(state: 'opened')
+  }
+
   #分配任务执行者
   def assign_executor!(executor)
     self.executor = executor
@@ -19,6 +24,10 @@ class Todo < ActiveRecord::Base
 
   #关闭任务
   def close!(closer)
+    unless self.state == 'opened'
+      return
+    end
+    
     self.state = 'closed'
     save!
     send_close_todo_event(closer)

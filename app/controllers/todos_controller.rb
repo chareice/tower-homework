@@ -8,7 +8,7 @@ class TodosController < ApplicationController
 
   def index
     @project = Project.find(params[:project_id])
-    @todos = @project.todos
+    @todos = @project.todos.on_processing
   end
 
   def create
@@ -32,6 +32,19 @@ class TodosController < ApplicationController
     todo = Todo.find(params[:id])
     todo.update_attributes!(todo_params)
     redirect_to todo_path(todo)
+  end
+
+  def close
+    todo = Todo.find(params[:id])
+    todo.close!(current_user)
+    redirect_to project_todos_path(project_id: todo.project.id)
+  end
+
+  def destroy
+    todo = Todo.find(params[:id])
+    project_id = todo.project_id
+    todo.destroy
+    redirect_to project_todos_path(project_id: todo.project.id)
   end
 
   private

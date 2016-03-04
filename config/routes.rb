@@ -7,7 +7,12 @@ Rails.application.routes.draw do
   end
 
   resources :projects, shallow: true do
-    resources :todos, only: [:index, :new, :create, :update, :show]
+    resources :todos, only: [:index, :new, :create, :update, :show, :destroy] do
+      member do
+        #关闭Todo
+        patch :close
+      end
+    end
   end
 
   resources :todos, shallow: true do
@@ -15,4 +20,6 @@ Rails.application.routes.draw do
   end
 
   resources :sessions, only: [:create, :destroy, :new]
+
+  root to: 'teams#index'
 end

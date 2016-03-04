@@ -22,10 +22,16 @@ function($scope){
 
 </script>
 <div ng-app="TowerHomework" ng-controller="MainCtrl">
-  <ul class="event-list">
-    <li ng-repeat="event in events">
+  <ul class="event-list" ng-repeat="(groupDate, dateEvents) in eventGroupByDate">
+    <div>
+      <h2>
+        {{groupDate}}
+      </h2>
+    </div>
+    <li ng-repeat="event in dateEvents">
+
       <div class="created_at">
-        {{event.created_at | date:"H:mm"}}
+        {{event.created_at | date:"HH:mm"}}
       </div>
 
       <div class="actor_name">
@@ -56,6 +62,14 @@ function($scope){
           将
           <span ng-if="event.from">的</span>
           任务指派给 {{event.to}}
+        </div>
+
+        <div ng-if="event.action == 'destroy_todo'">
+          删除了任务
+        </div>
+
+        <div ng-if="event.action == 'close_todo'">
+          完成了任务
         </div>
       </div>
 
