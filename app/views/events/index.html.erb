@@ -1,26 +1,6 @@
 <script src="/angular.min.js"></script>
 <script src="/sugar.min.js"></script>
 <%= link_to('返回项目列表', team_projects_path(team_id: @team.id)) %>
-
-<script>
-Date.prototype.mmdd = function() {
- var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
- var dd  = this.getDate().toString();
- return (mm[1]?mm:"0"+mm[0]) +'/' +(dd[1]?dd:"0"+dd[0]); // padding
-};
-
-angular.module('TowerHomework', [])
-.controller('MainCtrl', [
-'$scope',
-function($scope){
-  $scope.events = <%= @events.to_s.html_safe%>;
-  $scope.eventGroupByDate = $scope.events.groupBy(function(event){
-    var date = new Date(event.created_at)
-    return date.mmdd();
-  });
-}]);
-
-</script>
 <div ng-app="TowerHomework" ng-controller="MainCtrl">
   <ul class="event-list" ng-repeat="(groupDate, dateEvents) in eventGroupByDate">
     <div>
@@ -87,4 +67,61 @@ function($scope){
       </div>
     </li>
   </ul>
+  <div ng-show="onLoading">
+    加载中
+  </div>
+  <p ng-show="hasMore()">
+    <button ng-click="loadNextPageData()">加载更多</button>
+  </p>
+
+  <p ng-show="!hasMore()">
+    没有更多了
+  </p>
 </div>
+
+<script>
+Date.prototype.mmdd = function() {
+ var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+ var dd  = this.getDate().toString();
+ return (mm[1]?mm:"0"+mm[0]) +'/' +(dd[1]?dd:"0"+dd[0]); // padding
+};
+
+angular.module('TowerHomework', [])
+.controller('MainCtrl',
+function($scope, $http){
+  var events = [];
+  $scope.eventGroupByDate = [];
+  $scope.onLoading = false;
+  var loadingUrl = "<%= team_events_path %>.json";
+  var current_page = 0;
+  var total_page = 0;
+
+  $scope.hasMore = function(){
+    return total_page > current_page;
+  };
+
+  var loadData = function(page){
+    if(!page){
+      page = 1;
+    }
+    $scope.onLoading = true;
+    $http({method: 'GET', url: loadingUrl + "/?page=" + page}).then(function(data){
+      events = $.merge(events, data.data.data);
+      $scope.eventGroupByDate = events.groupBy(function(event){
+        var date = new Date(event.created_at)
+        return date.mmdd();
+      });
+
+      $scope.onLoading = false;
+      current_page = data.data.current_page;
+      total_page = data.data.total_page;
+    })
+  };
+
+  loadData();
+
+  $scope.loadNextPageData = function(){
+    loadData(current_page + 1);
+  };
+});
+</script>
