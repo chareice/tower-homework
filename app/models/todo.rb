@@ -16,6 +16,11 @@ class Todo < ActiveRecord::Base
     where(state: 'opened')
   }
 
+  def update_attributes_by_user!(actor, params)
+    @actor = actor
+    self.update_attributes!(params)
+  end
+
   #分配任务执行者
   def assign_executor!(executor)
     self.executor = executor
@@ -27,7 +32,7 @@ class Todo < ActiveRecord::Base
     unless self.state == 'opened'
       return
     end
-    
+
     self.state = 'closed'
     save!
     send_close_todo_event(closer)
@@ -49,14 +54,14 @@ class Todo < ActiveRecord::Base
   end
 
   def send_change_event
+    changed = false
     #修改了任务的截止时间
     if self.deadline_changed?
       deadline_change = self.changes['deadline']
       from = deadline_change[0]
       to = deadline_change[1]
-
-      options = {action: 'change_deadline', todo: self, from: from, to: to}
-      Event.build(options)
+      action = 'change_deadline'
+      changed = true
     end
 
     if self.executor_id_changed?
@@ -71,8 +76,16 @@ class Todo < ActiveRecord::Base
       end
 
       to = User.find(to_id).username
+      changed = true
+      action = 'change_executor'
+    end
 
-      options = {action: 'change_executor', todo: self, from: from, to: to}
+    if changed
+      options = {action: action, todo: self, from: from, to: to}
+      if @actor
+        options[:actor_name] = @actor.username
+        options[:actor_id] = @actor.id
+      end
       Event.build(options)
     end
   end

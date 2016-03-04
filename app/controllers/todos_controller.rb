@@ -30,7 +30,7 @@ class TodosController < ApplicationController
 
   def update
     todo = Todo.find(params[:id])
-    todo.update_attributes!(todo_params)
+    todo.update_attributes_by_user!(current_user, todo_params)
     redirect_to todo_path(todo)
   end
 

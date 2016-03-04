@@ -46,6 +46,23 @@ RSpec.describe TodosController, type: :controller do
       expect(response).to have_http_status(302)
     end
 
+    it '非任务创建者修改任务 Event记录的Actor应该为修改任务者' do
+      @executor = create(:user)
+      content = '艰巨的任务'
+      expect{
+        post :create, project_id: @project.id, todo: {content: content, executor_id: @executor.id}
+      }.to change{Todo.count}.by(1)
+      @todo = Todo.first
+      sign_out
+      sign_in @executor
+      expect{
+        patch :update, id: @todo.id, todo: {deadline: '2016-03-31'}
+      }.to change{Event.count}.by(1)
+
+      event = Event.last
+      expect(event.actor_id).to eq(@executor.id)
+    end
+
     it '可以完成todo' do
       @executor = create(:user)
       content = '艰巨的任务'

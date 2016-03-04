@@ -7,6 +7,6 @@
     = f.datetime_local_field(:deadline)
   p
     = f.label(:executor_id, '执行人')
-    = f.select "executor_id", options_from_collection_for_select(@todo.project.users, 'id', 'username', include_blank: true)
+    = f.select "executor_id", options_from_collection_for_select(@todo.project.users, 'id', 'username', @todo.executor_id)
 
   = f.submit('修改Todo')
