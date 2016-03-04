@@ -29,6 +29,9 @@ function($scope){
       </h2>
     </div>
     <li ng-repeat="event in dateEvents">
+      <div class="project-title" ng-if="dateEvents[$index -1].project_id != event.project_id">
+        <a href="/projects/{{event.project_id}}/todos">{{event.project_name}}</a>
+      </div>
 
       <div class="created_at">
         {{event.created_at | date:"HH:mm"}}
