@@ -63,7 +63,7 @@ function($scope){
 
         <div ng-if="event.action == 'change_executor'">
           将
-          <span ng-if="event.from">的</span>
+          <span ng-if="event.from">{{event.from}}的</span>
           任务指派给 {{event.to}}
         </div>
 
